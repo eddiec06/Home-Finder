@@ -103,3 +103,15 @@ async def on_startup():
 @app.on_event("shutdown")
 async def on_shutdown():
     mongo_client.close()
+
+
+# ---- entrypoint for `python server.py` (used by Render) ---------------------
+# In the Emergent dev environment supervisor launches `uvicorn server:app` with
+# hot reload, so this block is a no-op locally.  On Render the start command is
+# `python server.py`, which executes the block below.
+if __name__ == "__main__":
+    import uvicorn
+
+    # Render injects the public port via $PORT.  Default 10000 mirrors Render docs.
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

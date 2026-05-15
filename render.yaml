@@ -1,0 +1,51 @@
+# Render Blueprint — declares both services so Render does NOT auto-detect
+# (auto-detection sometimes guesses Java when no obvious entry point is found).
+# This project is Python (FastAPI) + React + MongoDB.
+#
+# IMPORTANT: Render does not host MongoDB.  Provision one separately (free tier
+# on MongoDB Atlas works well) and paste its connection string into MONGO_URL
+# from the Render dashboard.
+
+services:
+  # ------------------------------------------------------------
+  # Backend - FastAPI (served by uvicorn from server.py)
+  # ------------------------------------------------------------
+  - type: web
+    name: home-finder-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: MONGO_URL
+        sync: false           # set from Render dashboard (MongoDB Atlas URI)
+      - key: DB_NAME
+        value: homefinder_db
+      - key: JWT_SECRET
+        generateValue: true   # Render generates a strong random secret
+      - key: ADMIN_EMAIL
+        value: admin@homefinder.local
+      - key: ADMIN_PASSWORD
+        sync: false           # set from Render dashboard
+      - key: SIMULATE_MFA
+        value: "true"
+      - key: CORS_ORIGINS
+        sync: false           # set to the deployed frontend URL after first deploy
+
+  # ------------------------------------------------------------
+  # Frontend - React (CRA), built and served as a static site
+  # ------------------------------------------------------------
+  - type: web
+    name: home-finder-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: yarn install --frozen-lockfile && yarn build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        sync: false           # set to the backend service URL after first deploy
+    routes:
+      # SPA routing — every unknown path falls back to index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html

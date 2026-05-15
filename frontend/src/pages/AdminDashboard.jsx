@@ -42,7 +42,7 @@ export default function AdminDashboard() {
   }, [user]);
 
   if (user === undefined) return <p>Loading…</p>;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/" replace />;
   if (user.role !== "admin") return <Navigate to="/" replace />;
 
   function openCreate() {

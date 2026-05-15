@@ -23,11 +23,14 @@ class PropertyRepository:
         location: Optional[str],
         min_price: Optional[float],
         max_price: Optional[float],
+        listing_type: Optional[str] = None,
     ) -> List[dict]:
         query: dict = {}
         if location:
             # Case-insensitive substring match (like SQL LIKE %x%) - still parameterised.
             query["location"] = {"$regex": location, "$options": "i"}
+        if listing_type in ("rent", "sale"):
+            query["listing_type"] = listing_type
         if min_price is not None or max_price is not None:
             price_filter: dict = {}
             if min_price is not None:

@@ -5,11 +5,11 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [listingType, setListingType] = useState(""); // "" | "rent" | "sale"
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Initial load = all properties.
   useEffect(() => {
     search();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -24,6 +24,7 @@ export default function Home() {
         location: location.trim(),
         min_price: minPrice,
         max_price: maxPrice,
+        listing_type: listingType,
       });
       setResults(data);
     } catch (err) {
@@ -33,13 +34,18 @@ export default function Home() {
     }
   }
 
+  function formatPrice(p) {
+    const formatted = `€${Number(p.price).toLocaleString()}`;
+    return p.listing_type === "sale" ? formatted : `${formatted}/mo`;
+  }
+
   return (
     <>
       <section className="hf-hero" data-testid="hero">
         <h1>Find a place that feels like home.</h1>
         <p>
-          Browse listings near your campus. Filter by location and budget — search
-          is powered by parameterised queries to keep things safe.
+          Browse listings across Europe. Filter by location, type and budget —
+          search is powered by parameterised queries to keep things safe.
         </p>
 
         <form className="hf-search" onSubmit={search} data-testid="search-form">
@@ -50,6 +56,16 @@ export default function Home() {
             onChange={(e) => setLocation(e.target.value)}
             data-testid="search-location"
           />
+          <select
+            className="hf-select"
+            value={listingType}
+            onChange={(e) => setListingType(e.target.value)}
+            data-testid="search-listing-type"
+          >
+            <option value="">Any type</option>
+            <option value="rent">For rent</option>
+            <option value="sale">For sale</option>
+          </select>
           <input
             className="hf-input"
             type="number"
@@ -83,6 +99,7 @@ export default function Home() {
               setLocation("");
               setMinPrice("");
               setMaxPrice("");
+              setListingType("");
               setTimeout(() => search(), 0);
             }}
             data-testid="search-clear"
@@ -116,11 +133,17 @@ export default function Home() {
             >
               <img src={p.image_url} alt={p.title} />
               <div className="hf-card-body">
-                <h3 className="hf-card-title">{p.title}</h3>
-                <div className="hf-card-loc">{p.location}</div>
-                <div className="hf-card-price">
-                  €{Number(p.price).toLocaleString()}/mo
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                  <h3 className="hf-card-title">{p.title}</h3>
+                  <span
+                    className={`hf-badge hf-badge--${p.listing_type === "sale" ? "sale" : "rent"}`}
+                    data-testid={`badge-${p.propertyID}`}
+                  >
+                    {p.listing_type === "sale" ? "For sale" : "For rent"}
+                  </span>
                 </div>
+                <div className="hf-card-loc">{p.location}</div>
+                <div className="hf-card-price">{formatPrice(p)}</div>
                 <p style={{ margin: 0, color: "var(--muted)", fontSize: 14 }}>
                   {p.description}
                 </p>
@@ -128,6 +151,19 @@ export default function Home() {
                   <span>{p.bedrooms} bd</span>
                   <span>{p.bathrooms} ba</span>
                 </div>
+                {(p.contact_name || p.contact_email || p.contact_phone) && (
+                  <div className="hf-contact" data-testid={`contact-${p.propertyID}`}>
+                    {p.contact_name && <strong>{p.contact_name}</strong>}
+                    {p.contact_email && (
+                      <a href={`mailto:${p.contact_email}`}>{p.contact_email}</a>
+                    )}
+                    {p.contact_phone && (
+                      <a href={`tel:${p.contact_phone.replace(/\s/g, "")}`}>
+                        {p.contact_phone}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </article>
           ))}

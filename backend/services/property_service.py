@@ -18,8 +18,9 @@ class PropertyService:
         location: Optional[str],
         min_price: Optional[float],
         max_price: Optional[float],
+        listing_type: Optional[str] = None,
     ) -> List[dict]:
-        return await self.repo.search(location, min_price, max_price)
+        return await self.repo.search(location, min_price, max_price, listing_type)
 
     async def get(self, property_id: str) -> dict:
         prop = await self.repo.find_by_id(property_id)

@@ -60,6 +60,7 @@ export const api = {
       q.set("min_price", params.min_price);
     if (params.max_price !== "" && params.max_price != null)
       q.set("max_price", params.max_price);
+    if (params.listing_type) q.set("listing_type", params.listing_type);
     const qs = q.toString();
     return request(`/properties${qs ? `?${qs}` : ""}`);
   },

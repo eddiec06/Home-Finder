@@ -22,10 +22,11 @@ async def list_properties(
     location: Optional[str] = Query(default=None),
     min_price: Optional[float] = Query(default=None, ge=0),
     max_price: Optional[float] = Query(default=None, ge=0),
+    listing_type: Optional[str] = Query(default=None, pattern="^(rent|sale)$"),
     service=Depends(get_service),
 ):
-    """FR-05: filter by location and price using parameterised queries."""
-    return await service.search(location, min_price, max_price)
+    """FR-05: filter by location, price and listing type using parameterised queries."""
+    return await service.search(location, min_price, max_price, listing_type)
 
 
 @router.get("/properties/{property_id}")

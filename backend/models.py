@@ -42,6 +42,11 @@ class PropertyBase(BaseModel):
     bathrooms: int
     description: str
     image_url: str
+    # New fields:
+    listing_type: str = "rent"  # "rent" | "sale"
+    contact_name: str = ""
+    contact_email: str = ""
+    contact_phone: str = ""
 
 
 class PropertyCreate(PropertyBase):
@@ -56,6 +61,10 @@ class PropertyUpdate(BaseModel):
     bathrooms: Optional[int] = None
     description: Optional[str] = None
     image_url: Optional[str] = None
+    listing_type: Optional[str] = None
+    contact_name: Optional[str] = None
+    contact_email: Optional[str] = None
+    contact_phone: Optional[str] = None
 
 
 class Property(PropertyBase):

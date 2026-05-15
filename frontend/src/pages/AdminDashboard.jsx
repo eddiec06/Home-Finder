@@ -11,6 +11,10 @@ const blankForm = {
   bathrooms: "",
   description: "",
   image_url: "",
+  listing_type: "rent",
+  contact_name: "",
+  contact_email: "",
+  contact_phone: "",
 };
 
 export default function AdminDashboard() {
@@ -60,6 +64,10 @@ export default function AdminDashboard() {
       bathrooms: p.bathrooms,
       description: p.description,
       image_url: p.image_url,
+      listing_type: p.listing_type || "rent",
+      contact_name: p.contact_name || "",
+      contact_email: p.contact_email || "",
+      contact_phone: p.contact_phone || "",
     });
     setModalOpen(true);
   }
@@ -132,6 +140,7 @@ export default function AdminDashboard() {
           <thead>
             <tr>
               <th>Title</th>
+              <th>Type</th>
               <th>Location</th>
               <th>Price</th>
               <th>Bd</th>
@@ -143,6 +152,11 @@ export default function AdminDashboard() {
             {items.map((p) => (
               <tr key={p.propertyID} data-testid={`admin-row-${p.propertyID}`}>
                 <td>{p.title}</td>
+                <td>
+                  <span className={`hf-badge hf-badge--${p.listing_type === "sale" ? "sale" : "rent"}`}>
+                    {p.listing_type === "sale" ? "For sale" : "For rent"}
+                  </span>
+                </td>
                 <td>{p.location}</td>
                 <td>€{Number(p.price).toLocaleString()}</td>
                 <td>{p.bedrooms}</td>
@@ -267,6 +281,60 @@ export default function AdminDashboard() {
                   data-testid="admin-form-description"
                 />
               </div>
+
+              <div className="hf-row-2">
+                <div className="hf-field">
+                  <label>Listing type</label>
+                  <select
+                    className="hf-select"
+                    value={form.listing_type}
+                    onChange={(e) =>
+                      setForm({ ...form, listing_type: e.target.value })
+                    }
+                    data-testid="admin-form-listing-type"
+                  >
+                    <option value="rent">For rent</option>
+                    <option value="sale">For sale</option>
+                  </select>
+                </div>
+                <div className="hf-field">
+                  <label>Contact name</label>
+                  <input
+                    className="hf-input"
+                    value={form.contact_name}
+                    onChange={(e) =>
+                      setForm({ ...form, contact_name: e.target.value })
+                    }
+                    data-testid="admin-form-contact-name"
+                  />
+                </div>
+              </div>
+              <div className="hf-row-2">
+                <div className="hf-field">
+                  <label>Contact email</label>
+                  <input
+                    className="hf-input"
+                    type="email"
+                    value={form.contact_email}
+                    onChange={(e) =>
+                      setForm({ ...form, contact_email: e.target.value })
+                    }
+                    data-testid="admin-form-contact-email"
+                  />
+                </div>
+                <div className="hf-field">
+                  <label>Contact phone</label>
+                  <input
+                    className="hf-input"
+                    value={form.contact_phone}
+                    onChange={(e) =>
+                      setForm({ ...form, contact_phone: e.target.value })
+                    }
+                    data-testid="admin-form-contact-phone"
+                  />
+                </div>
+              </div>
+
               <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
                 <button
                   type="button"

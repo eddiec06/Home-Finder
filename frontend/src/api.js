@@ -47,6 +47,11 @@ export const api = {
     }),
   me: () => request("/auth/me", { auth: true }),
   logout: () => request("/auth/logout", { method: "POST", auth: true }),
+  register: (email, password, name) =>
+    request("/auth/register", {
+      method: "POST",
+      body: { email, password, name },
+    }),
 
   searchProperties: (params) => {
     const q = new URLSearchParams();

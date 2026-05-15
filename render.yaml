@@ -1,24 +1,16 @@
-# Render Blueprint — declares both services so Render does NOT auto-detect
-# (auto-detection sometimes guesses Java when no obvious entry point is found).
-# This project is Python (FastAPI) + React + MongoDB.
-#
-# IMPORTANT: Render does not host MongoDB.  Provision one separately (free tier
-# on MongoDB Atlas works well) and paste its connection string into MONGO_URL
-# from the Render dashboard.
-
 services:
   # ------------------------------------------------------------
   # Backend - FastAPI (served by uvicorn from server.py)
   # ------------------------------------------------------------
   - type: web
     name: home-finder-backend
-    env: python
+    runtime: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: python server.py
     envVars:
       - key: MONGO_URL
-        sync: false           # set from Render dashboard (MongoDB Atlas URI)
+        sync: false           # paste your MongoDB Atlas connection string here
       - key: DB_NAME
         value: homefinder_db
       - key: JWT_SECRET
@@ -26,7 +18,7 @@ services:
       - key: ADMIN_EMAIL
         value: admin@homefinder.local
       - key: ADMIN_PASSWORD
-        sync: false           # set from Render dashboard
+        sync: false           # set in Render dashboard
       - key: SIMULATE_MFA
         value: "true"
       - key: CORS_ORIGINS
@@ -37,7 +29,7 @@ services:
   # ------------------------------------------------------------
   - type: web
     name: home-finder-frontend
-    env: static
+    runtime: static
     rootDir: frontend
     buildCommand: yarn install --frozen-lockfile && yarn build
     staticPublishPath: ./build

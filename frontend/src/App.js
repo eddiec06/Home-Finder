@@ -4,6 +4,7 @@ import { AuthProvider } from "./auth";
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import MfaVerify from "./pages/MfaVerify";
 import AdminDashboard from "./pages/AdminDashboard";
 
@@ -15,6 +16,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/mfa" element={<MfaVerify />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>

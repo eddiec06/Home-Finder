@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api";
 
-export default function Login() {
+export default function Signup() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@homefinder.local");
-  const [password, setPassword] = useState("Admin@123");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -14,9 +15,9 @@ export default function Login() {
     setError("");
     setBusy(true);
     try {
-      const data = await api.login(email, password);
-      // Move to the MFA verification screen, passing the challenge_token
-      // (and the simulated code so the demo banner can show it).
+      const data = await api.register(email, password, name);
+      // Server returns the same shape as /auth/login → straight into the
+      // MFA verification screen.
       navigate("/mfa", {
         state: {
           challenge_token: data.challenge_token,
@@ -32,16 +33,31 @@ export default function Login() {
   }
 
   return (
-    <form className="hf-card-form" onSubmit={onSubmit} data-testid="login-form">
-      <h2>Sign in</h2>
+    <form className="hf-card-form" onSubmit={onSubmit} data-testid="signup-form">
+      <h2>Create an account</h2>
       <p className="hf-sub">
-        Step 1 of 2 — credentials. Demo admin is pre-filled below.
+        Sign up to save favourites and post listings. Already a member?{" "}
+        <Link to="/login">Log in</Link>.
       </p>
+
       {error && (
-        <div className="hf-error" data-testid="login-error">
+        <div className="hf-error" data-testid="signup-error">
           {error}
         </div>
       )}
+
+      <div className="hf-field">
+        <label htmlFor="name">Full name</label>
+        <input
+          id="name"
+          className="hf-input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          minLength={2}
+          data-testid="signup-name"
+        />
+      </div>
       <div className="hf-field">
         <label htmlFor="email">Email</label>
         <input
@@ -51,7 +67,7 @@ export default function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          data-testid="login-email"
+          data-testid="signup-email"
         />
       </div>
       <div className="hf-field">
@@ -63,25 +79,25 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          data-testid="login-password"
+          minLength={6}
+          data-testid="signup-password"
         />
+        <small style={{ color: "var(--muted)", fontSize: 12 }}>
+          At least 6 characters.
+        </small>
       </div>
+
       <button
         className="hf-btn"
         type="submit"
         disabled={busy}
-        data-testid="login-submit"
+        data-testid="signup-submit"
         style={{ width: "100%" }}
       >
-        {busy ? "Verifying…" : "Continue"}
+        {busy ? "Creating account…" : "Create account"}
       </button>
+
       <p style={{ marginTop: 14, fontSize: 13, color: "var(--muted)" }}>
-        Don't have an account?{" "}
-        <Link to="/signup" data-testid="goto-signup">
-          Create one
-        </Link>
-        .
-        <br />
         <Link to="/">← Back to browse</Link>
       </p>
     </form>

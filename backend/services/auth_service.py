@@ -23,6 +23,7 @@ from datetime import datetime, timezone, timedelta
 from fastapi import HTTPException, status
 
 from core.security import (
+    hash_password,
     verify_password,
     create_access_token,
     create_challenge_token,
@@ -44,6 +45,32 @@ class AuthService:
     async def ensure_indexes(self) -> None:
         # TTL index: MongoDB auto-removes expired MFA challenges (5 minute lifetime).
         await self.challenges.create_index("expires_at", expireAfterSeconds=0)
+
+    # ---- Sign-up ----------------------------------------------------------------
+    async def register(self, email: str, password: str, name: str) -> dict:
+        """Create a new (non-admin) account, then start the MFA flow as if the
+        user had just logged in.  This gives sign-up and sign-in an identical
+        2-step UX."""
+        import uuid
+        from datetime import datetime, timezone
+
+        email = email.strip().lower()
+        if await self.users.find_by_email(email):
+            raise HTTPException(status_code=409, detail="Email already registered")
+
+        await self.users.insert(
+            {
+                "id": str(uuid.uuid4()),
+                "email": email,
+                "password_hash": hash_password(password),
+                "name": name.strip(),
+                "role": "user",
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            }
+        )
+        # Re-use the login flow so the response is identical (challenge_token +
+        # simulated_code).  The frontend then routes to /mfa.
+        return await self.login(email, password)
 
     # ---- Step 1: password login --------------------------------------------------
     async def login(self, email: str, password: str) -> dict:

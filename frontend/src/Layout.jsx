@@ -41,9 +41,14 @@ export default function Layout({ children }) {
               </button>
             </>
           ) : (
-            <Link to="/login" data-testid="nav-login">
-              <button className="hf-btn hf-btn-secondary">Login</button>
-            </Link>
+            <>
+              <Link to="/signup" data-testid="nav-signup">
+                <button className="hf-btn hf-btn-secondary">Sign up</button>
+              </Link>
+              <Link to="/login" data-testid="nav-login">
+                <button className="hf-btn">Login</button>
+              </Link>
+            </>
           )}
         </nav>
       </header>

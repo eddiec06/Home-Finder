@@ -5,7 +5,7 @@ Maps HTTP routes -> AuthService methods. Has NO business logic of its own.
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
-from models import LoginRequest, MFAVerifyRequest
+from models import LoginRequest, MFAVerifyRequest, RegisterRequest
 from core.session_manager import SessionManager
 from core.security import decode_token
 
@@ -52,6 +52,12 @@ def require_admin(user: dict = Depends(get_current_user)) -> dict:
 
 
 # ---- routes ----------------------------------------------------------------------
+# ---- routes ----------------------------------------------------------------------
+@router.post("/register")
+async def register(payload: RegisterRequest, service=Depends(get_auth_service)):
+    return await service.register(payload.email, payload.password, payload.name)
+
+
 @router.post("/login")
 async def login(payload: LoginRequest, service=Depends(get_auth_service)):
     return await service.login(payload.email, payload.password)

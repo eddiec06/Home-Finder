@@ -144,7 +144,7 @@ export default function AdminDashboard() {
               <tr key={p.propertyID} data-testid={`admin-row-${p.propertyID}`}>
                 <td>{p.title}</td>
                 <td>{p.location}</td>
-                <td>Rs. {Number(p.price).toLocaleString()}</td>
+                <td>€{Number(p.price).toLocaleString()}</td>
                 <td>{p.bedrooms}</td>
                 <td>{p.bathrooms}</td>
                 <td className="hf-table-actions">
@@ -198,7 +198,7 @@ export default function AdminDashboard() {
               </div>
               <div className="hf-row-2">
                 <div className="hf-field">
-                  <label>Price (Rs./mo)</label>
+                  <label>Price (€/mo)</label>
                   <input
                     className="hf-input"
                     type="number"

@@ -45,7 +45,7 @@ export default function Home() {
         <form className="hf-search" onSubmit={search} data-testid="search-form">
           <input
             className="hf-input"
-            placeholder="Location (e.g. Lahore)"
+            placeholder="Location (e.g. Berlin)"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             data-testid="search-location"
@@ -119,7 +119,7 @@ export default function Home() {
                 <h3 className="hf-card-title">{p.title}</h3>
                 <div className="hf-card-loc">{p.location}</div>
                 <div className="hf-card-price">
-                  Rs. {Number(p.price).toLocaleString()}/mo
+                  €{Number(p.price).toLocaleString()}/mo
                 </div>
                 <p style={{ margin: 0, color: "var(--muted)", fontSize: 14 }}>
                   {p.description}

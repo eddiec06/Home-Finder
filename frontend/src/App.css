@@ -2,18 +2,18 @@
    Deliberately simple: no Tailwind, no design system, just plain CSS.       */
 
 :root {
-  --bg: #f5f3ec;
+  --bg: #f4f4f5;
   --surface: #ffffff;
   --ink: #1f2933;
-  --muted: #5c6773;
-  --brand: #2f5d50;
-  --brand-strong: #1f3f37;
-  --accent: #d97742;
-  --border: #d8d2c4;
+  --muted: #6b7280;
+  --brand: #3f4750;          /* dark slate grey (replaces green) */
+  --brand-strong: #1f242b;   /* near-black slate */
+  --accent: #ffffff;         /* white accent (replaces orange) */
+  --border: #d6d6da;
   --danger: #b3261e;
   --ok: #2a7f3e;
-  --info-bg: #fff4d6;
-  --info-border: #e6c879;
+  --info-bg: #f4f4f5;
+  --info-border: #c9cace;
   --shadow: 0 2px 0 rgba(31, 41, 51, 0.06);
 }
 
@@ -47,8 +47,24 @@ a:hover { text-decoration: underline; }
   font-family: "DM Serif Display", Georgia, serif;
   font-size: 26px;
   letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
 }
-.hf-logo span { color: var(--accent); }
+.hf-logo:hover { text-decoration: none; }
+.hf-logo span { color: var(--accent); font-style: italic; }
+.hf-logo-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
+}
+.hf-logo-mark svg { display: block; }
 .hf-nav { display: flex; gap: 22px; align-items: center; }
 .hf-nav a { color: #fff; font-weight: 600; opacity: 0.92; }
 .hf-nav a:hover { opacity: 1; text-decoration: underline; }
@@ -127,7 +143,7 @@ a:hover { text-decoration: underline; }
   color: var(--brand);
   border-color: var(--brand);
 }
-.hf-btn-secondary:hover { background: #ecf2ef; }
+.hf-btn-secondary:hover { background: #ececef; }
 .hf-btn-danger { background: var(--danger); border-color: #861a16; }
 .hf-btn-danger:hover { background: #861a16; }
 
@@ -228,6 +244,7 @@ a:hover { text-decoration: underline; }
   border-radius: 4px;
   margin-bottom: 14px;
   font-size: 14px;
+  color: var(--ink);
 }
 .hf-info code {
   font-family: "JetBrains Mono", monospace;
@@ -236,6 +253,7 @@ a:hover { text-decoration: underline; }
   border-radius: 3px;
   font-weight: 700;
   letter-spacing: 2px;
+  border: 1px solid var(--border);
 }
 
 /* Admin table --------------------------------------------------- */
@@ -257,7 +275,7 @@ a:hover { text-decoration: underline; }
   vertical-align: middle;
 }
 .hf-table th {
-  background: #efeadf;
+  background: #ececef;
   font-weight: 700;
   color: var(--brand-strong);
 }

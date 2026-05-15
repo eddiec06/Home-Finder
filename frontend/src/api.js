@@ -64,6 +64,7 @@ export const api = {
     const qs = q.toString();
     return request(`/properties${qs ? `?${qs}` : ""}`);
   },
+  getProperty: (id) => request(`/properties/${id}`),
   createProperty: (data) =>
     request("/admin/properties", { method: "POST", body: data, auth: true }),
   updateProperty: (id, data) =>

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MfaVerify from "./pages/MfaVerify";
 import AdminDashboard from "./pages/AdminDashboard";
+import PropertyDetail from "./pages/PropertyDetail";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/mfa" element={<MfaVerify />} />

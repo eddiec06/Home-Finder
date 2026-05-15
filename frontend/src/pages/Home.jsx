@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../api";
 
 export default function Home() {
@@ -126,9 +127,10 @@ export default function Home() {
       ) : (
         <div className="hf-grid" data-testid="property-grid">
           {results.map((p) => (
-            <article
+            <Link
               key={p.propertyID}
-              className="hf-card"
+              to={`/property/${p.propertyID}`}
+              className="hf-card hf-card-link"
               data-testid={`property-card-${p.propertyID}`}
             >
               <img src={p.image_url} alt={p.title} />
@@ -150,22 +152,12 @@ export default function Home() {
                 <div className="hf-card-meta">
                   <span>{p.bedrooms} bd</span>
                   <span>{p.bathrooms} ba</span>
+                  <span style={{ marginLeft: "auto", color: "var(--brand-strong)", fontWeight: 600 }}>
+                    View details →
+                  </span>
                 </div>
-                {(p.contact_name || p.contact_email || p.contact_phone) && (
-                  <div className="hf-contact" data-testid={`contact-${p.propertyID}`}>
-                    {p.contact_name && <strong>{p.contact_name}</strong>}
-                    {p.contact_email && (
-                      <a href={`mailto:${p.contact_email}`}>{p.contact_email}</a>
-                    )}
-                    {p.contact_phone && (
-                      <a href={`tel:${p.contact_phone.replace(/\s/g, "")}`}>
-                        {p.contact_phone}
-                      </a>
-                    )}
-                  </div>
-                )}
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       )}

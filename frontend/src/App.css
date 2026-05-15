@@ -219,18 +219,114 @@ a:hover { text-decoration: underline; }
 .hf-badge--rent { background: #eef2f5; }
 .hf-badge--sale { background: #1f242b; color: #fff; border-color: #1f242b; }
 
-.hf-contact {
-  border-top: 1px solid var(--border);
-  margin-top: 8px;
-  padding-top: 8px;
-  font-size: 13px;
+/* Clickable property card --------------------------------------- */
+.hf-card-link {
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.hf-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(31, 41, 51, 0.10);
+  text-decoration: none;
+}
+
+/* Property detail page ------------------------------------------ */
+.hf-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+}
+@media (max-width: 860px) {
+  .hf-detail { grid-template-columns: 1fr; }
+}
+.hf-detail-img {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  max-height: 520px;
+  object-fit: cover;
+  display: block;
+}
+.hf-detail-body {
+  padding: 28px 32px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  color: var(--muted);
+  gap: 12px;
 }
-.hf-contact strong { color: var(--ink); }
-.hf-contact a { color: var(--brand-strong); }
+.hf-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.hf-detail-title {
+  font-family: "DM Serif Display", Georgia, serif;
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+}
+.hf-detail-loc { color: var(--muted); font-size: 15px; }
+.hf-detail-price {
+  color: var(--brand-strong);
+  font-weight: 700;
+  font-size: 22px;
+}
+.hf-detail-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+.hf-detail-stats strong { color: var(--ink); margin-right: 4px; }
+.hf-detail-section {
+  font-family: "DM Serif Display", Georgia, serif;
+  margin: 8px 0 0 0;
+  font-size: 18px;
+}
+.hf-detail-desc {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.hf-detail-cta {
+  margin-top: 16px;
+  border-top: 1px dashed var(--border);
+  padding-top: 18px;
+}
+
+.hf-contact-card {
+  background: #fafafb;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+.hf-contact-card-title {
+  font-weight: 700;
+  color: var(--brand-strong);
+  margin-bottom: 10px;
+}
+.hf-contact-card-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.hf-contact-card-row:last-of-type { border-bottom: none; }
+.hf-contact-card-row span { color: var(--muted); }
+.hf-contact-card-row a { color: var(--brand-strong); }
 
 /* Forms ---------------------------------------------------------- */
 .hf-card-form {

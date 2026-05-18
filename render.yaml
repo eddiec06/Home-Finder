@@ -8,7 +8,7 @@ services:
   - type: web
     name: home-finder-backend
     runtime: python
-    startCommand: cd backend && python server.py
+    startCommand: python backend/server.py
     envVars:
       - key: MONGO_URL
         sync: false           # paste your MongoDB Atlas connection string here

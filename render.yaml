@@ -1,14 +1,13 @@
 services:
   # ------------------------------------------------------------
   # Backend - FastAPI (native Python on Render).
-  # Render's Python buildpack picks up the root `requirements.txt`
-  # (which `-r`-includes backend/requirements.txt) and `runtime.txt`
-  # automatically, so no explicit buildCommand is needed.
+  # Render auto-installs the root `requirements.txt` (which `-r`-includes
+  # backend/requirements.txt) and pins Python via `runtime.txt`.
   # ------------------------------------------------------------
   - type: web
     name: home-finder-backend
     runtime: python
-    startCommand: python backend/server.py
+    startCommand: python -m uvicorn backend.server:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: MONGO_URL
         sync: false           # paste your MongoDB Atlas connection string here

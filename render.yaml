@@ -1,28 +1,30 @@
 services:
   # ------------------------------------------------------------
   # Backend - FastAPI (native Python on Render).
-  # Render auto-installs the root `requirements.txt` (which `-r`-includes
-  # backend/requirements.txt) and pins Python via `runtime.txt`.
   # ------------------------------------------------------------
   - type: web
     name: home-finder-backend
     runtime: python
     startCommand: python backend/server.py
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9         # Render uses this env var to pin Python
+      - key: PYTHONUNBUFFERED
+        value: "1"            # so any error is flushed to logs before exit
       - key: MONGO_URL
-        sync: false           # paste your MongoDB Atlas connection string here
+        sync: false
       - key: DB_NAME
         value: homefinder_db
       - key: JWT_SECRET
-        generateValue: true   # Render generates a strong random secret
+        generateValue: true
       - key: ADMIN_EMAIL
         value: admin@homefinder.local
       - key: ADMIN_PASSWORD
-        sync: false           # set in Render dashboard
+        sync: false
       - key: SIMULATE_MFA
         value: "true"
       - key: CORS_ORIGINS
-        sync: false           # set to the deployed frontend URL after first deploy
+        sync: false
 
   # ------------------------------------------------------------
   # Frontend - React (CRA), built and served as a static site.
@@ -34,9 +36,8 @@ services:
     staticPublishPath: ./frontend/build
     envVars:
       - key: REACT_APP_BACKEND_URL
-        sync: false           # set to the backend service URL after first deploy
+        sync: false
     routes:
-      # SPA routing — every unknown path falls back to index.html
       - type: rewrite
         source: /*
         destination: /index.html

@@ -1,6 +1,8 @@
 services:
   # ------------------------------------------------------------
   # Backend - FastAPI (served by uvicorn from server.py)
+  # Render will use the root Dockerfile when Docker mode is active,
+  # OR the native-Python buildCommand below in Blueprint mode.
   # ------------------------------------------------------------
   - type: web
     name: home-finder-backend
@@ -8,6 +10,8 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: python server.py
+    dockerfilePath: ./Dockerfile          # root Dockerfile if Docker mode is used
+    dockerContext: .
     envVars:
       - key: MONGO_URL
         sync: false           # paste your MongoDB Atlas connection string here

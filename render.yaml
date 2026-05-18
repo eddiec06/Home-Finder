@@ -1,13 +1,13 @@
 services:
   # ------------------------------------------------------------
   # Backend - FastAPI (native Python on Render).
-  # Paths are absolute from the repo root so the build works even if
-  # the Render service has no "Root Directory" override set.
+  # Render's Python buildpack picks up the root `requirements.txt`
+  # (which `-r`-includes backend/requirements.txt) and `runtime.txt`
+  # automatically, so no explicit buildCommand is needed.
   # ------------------------------------------------------------
   - type: web
     name: home-finder-backend
     runtime: python
-    buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && python server.py
     envVars:
       - key: MONGO_URL
